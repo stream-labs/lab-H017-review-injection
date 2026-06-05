@@ -1,0 +1,16 @@
+# LAB VICTIM (H017) — review injection. The pull_request_review body is interpolated
+# straight into a run: step, so an attacker-chosen review body executes on the runner.
+name: Lab Review
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    env:
+      LAB_SECRET: ${{ secrets.LAB_SECRET }}
+    steps:
+      - name: Greet
+        run: echo Review says ${{ github.event.review.body }}
